@@ -21,12 +21,15 @@ const refreshAccessToken = async () => {
     const response = await axios.post(`${BASE_URL}/auth/refresh`, {
       refresh_token: refreshToken,
     });
+
     const { access_token, refresh_token: newRefreshToken } = response.data;
 
     Cookies.set("access_token", access_token);
     Cookies.set("refresh_token", newRefreshToken);
+
     return access_token;
   } catch (error) {
+    // Refresh token gagal → hapus token
     Cookies.remove("access_token");
     Cookies.remove("refresh_token");
     return null;
@@ -51,27 +54,28 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
-    // Cek kalau error 401 dan belum dicoba retry
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const newAccessToken = await refreshAccessToken();
+
       if (newAccessToken) {
-        // Pasang token baru
         originalRequest.headers = {
           ...originalRequest.headers,
           Authorization: `Bearer ${newAccessToken}`,
         };
-        // Retry request
         return api(originalRequest);
       }
+
+      // Jika refresh token gagal → hapus token & redirect
+      Cookies.remove("access_token");
+      Cookies.remove("refresh_token");
+      window.location.href = "/auth"; // ⬅️ redirect ke halaman login
     }
 
-    // Kalau tetap gagal
-    Cookies.remove("access_token");
-    Cookies.remove("refresh_token");
     return Promise.reject(error);
   }
 );
+
 
 export default api;

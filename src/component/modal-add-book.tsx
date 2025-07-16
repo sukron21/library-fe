@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Form, Input, Modal, Tag } from "antd";
+import { Button, Form, Input, InputNumber, Modal, Tag } from "antd";
 import { Info } from "lucide-react";
 
 type RequiredMark = boolean | "optional" | "customize";
@@ -21,10 +21,17 @@ const customizeRequiredMark = (
 interface AddBook {
   setIsModalOpen: (open: boolean) => void;
   open: boolean;
+  form: any;
+  onSubmit: (values: any) => void;
+  type?: string;
 }
 
-const ModalAddBook: React.FC<AddBook> = ({ setIsModalOpen, open }: AddBook) => {
-  const [form] = Form.useForm();
+const ModalAddBook: React.FC<AddBook> = ({
+  setIsModalOpen,
+  open,
+  form,
+  onSubmit,
+}: AddBook) => {
   const [requiredMark, setRequiredMarkType] =
     useState<RequiredMark>("optional");
 
@@ -59,11 +66,13 @@ const ModalAddBook: React.FC<AddBook> = ({ setIsModalOpen, open }: AddBook) => {
           layout="vertical"
           initialValues={{ requiredMarkValue: requiredMark }}
           onValuesChange={onRequiredTypeChange}
+          onFinish={onSubmit}
           //   requiredMark={
           //     requiredMark === "customize" ? customizeRequiredMark : requiredMark
           //   }
         >
           <Form.Item
+            name="title"
             label="Title"
             required
             // tooltip="This is a required field"
@@ -71,6 +80,7 @@ const ModalAddBook: React.FC<AddBook> = ({ setIsModalOpen, open }: AddBook) => {
             <Input placeholder="input placeholder" />
           </Form.Item>
           <Form.Item
+            name="author"
             label="Author"
             required
             // tooltip={{ title: "Tooltip with customize icon", icon: <Info /> }}
@@ -78,6 +88,7 @@ const ModalAddBook: React.FC<AddBook> = ({ setIsModalOpen, open }: AddBook) => {
             <Input placeholder="input placeholder" />
           </Form.Item>
           <Form.Item
+            name="isbn"
             label="Isbn"
             required
             // tooltip={{ title: "Tooltip with customize icon", icon: <Info /> }}
@@ -85,13 +96,18 @@ const ModalAddBook: React.FC<AddBook> = ({ setIsModalOpen, open }: AddBook) => {
             <Input placeholder="input placeholder" />
           </Form.Item>
           <Form.Item
+            name="quantity"
             label="Quantity"
             required
             // tooltip={{ title: "Tooltip with customize icon", icon: <Info /> }}
           >
-            <Input placeholder="input placeholder" />
+            <InputNumber
+              style={{ width: "100%" }}
+              placeholder="input placeholder"
+            />
           </Form.Item>
           <Form.Item
+            name="category"
             label="Category"
             required
             // tooltip={{ title: "Tooltip with customize icon", icon: <Info /> }}
@@ -99,7 +115,9 @@ const ModalAddBook: React.FC<AddBook> = ({ setIsModalOpen, open }: AddBook) => {
             <Input placeholder="input placeholder" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary">Submit</Button>
+            <Button type="primary" htmlType="submit">
+              Submit
+            </Button>
           </Form.Item>
         </Form>
       </Modal>

@@ -43,7 +43,6 @@ export default function DashboardPage() {
     try {
       const response = await Summary();
       setSummary(response.data);
-      console.log("responseSum", response);
     } catch (error: any) {
       console.log();
     }
@@ -51,7 +50,6 @@ export default function DashboardPage() {
   const getLatesActivity = async () => {
     try {
       const response = await LatesActivity();
-      console.log("responselas", response);
       setLatesActivity(response.data);
     } catch (error: any) {
       console.log();
@@ -60,7 +58,6 @@ export default function DashboardPage() {
   const getTopBorrowed = async () => {
     try {
       const response = await TopBorrowed();
-      console.log("responsetop", response);
       setTopBorrowed(response.data);
     } catch (error: any) {
       console.log();
@@ -69,7 +66,6 @@ export default function DashboardPage() {
   const getMonthlyTrend = async () => {
     try {
       const response = await MonthlyTrend();
-      console.log("responseMont", response);
       setMonthlyTrend(response.data);
     } catch (error: any) {
       console.log();
@@ -78,7 +74,6 @@ export default function DashboardPage() {
   const getCategoryDistribution = async () => {
     try {
       const response = await CategoryDistribution();
-      console.log("responseCategory", response);
       const datas = response.data.map((item: any) => ({
         ...item,
         name: item.category,

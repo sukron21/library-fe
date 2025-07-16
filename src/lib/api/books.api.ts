@@ -1,8 +1,14 @@
 import api from "./api.config";
 import type { Book, PaginationResponse } from "../types/book";
 
-export const getAllBooks = async (): Promise<PaginationResponse<Book>> => {
-  const res = await api.get<PaginationResponse<Book>>("/protected/books");
+export const getAllBooks = async ( page: number = 1,
+  limit: number = 10): Promise<PaginationResponse<Book>> => {
+  const res = await api.get<PaginationResponse<Book>>("/protected/books", {
+    params: {
+      page,
+      limit,
+    },
+  });
   return res.data;
 };
 

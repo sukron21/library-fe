@@ -3,7 +3,7 @@ export interface Book {
   title: string;
   author: string;
   isbn: string;
-  quantity: number;
+  quantity: string;
   category: string;
 }
 export interface PaginationResponse<T> {

@@ -44,7 +44,6 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
       router.push("/dashboard");
     } catch (error: any) {
       setIsLoading(false);
-      console.log("error", error);
 
       openNotificationWithIcon(
         "success",

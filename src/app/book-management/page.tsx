@@ -1,12 +1,18 @@
 "use client";
-import { Button, notification, Table, Tooltip } from "antd";
+import { Button, Form, notification, Table, Tooltip } from "antd";
 import Sidebar from "@/component/sidebar";
 import Header from "@/component/header";
 import { Pencil, Trash2 } from "lucide-react";
 import ModalAddBook from "@/component/modal-add-book";
 import { useEffect, useState } from "react";
-import { getAllBooks } from "@/lib/api/books.api";
+import {
+  createBook,
+  deleteBook,
+  getAllBooks,
+  updateBook,
+} from "@/lib/api/books.api";
 import { Book } from "@/lib/types/book";
+import ModalConfirmation from "@/component/modal-confirmation";
 
 const dataSource = [
   {
@@ -30,10 +36,14 @@ const dataSource = [
 type NotificationType = "success" | "info" | "warning" | "error";
 
 export default function ManagementBook() {
+  const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalDelete, setIsModalDelete] = useState(false);
   const [api, contextHolder] = notification.useNotification();
   const [isLoading, setIsLoading] = useState(false);
   const [isData, setIsData] = useState<any>([]);
+  const [isID, setIsID] = useState<string>("");
+  const [isType, setIsType] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const pageSize = 10;
 
@@ -73,16 +83,29 @@ export default function ManagementBook() {
     },
     {
       title: "Action",
-      dataIndex: "action",
-      key: "action",
-      render: () => (
+      dataIndex: "id",
+      key: "id",
+      render: (text: string, record: Book) => (
         <>
           <div className="flex gap-3">
             <Tooltip title="Update data">
-              <Pencil size={20} className="cursor-pointer text-blue-600" />
+              <Pencil
+                size={20}
+                className="cursor-pointer text-blue-600"
+                onClick={() => {
+                  showModalUpdate(record);
+                }}
+              />
             </Tooltip>
             <Tooltip title="Delete data">
-              <Trash2 size={20} className="cursor-pointer text-red-600" />
+              <Trash2
+                size={20}
+                className="cursor-pointer text-red-600"
+                onClick={() => {
+                  setIsModalDelete(true);
+                  setIsID(text);
+                }}
+              />
             </Tooltip>
           </div>
         </>
@@ -99,21 +122,87 @@ export default function ManagementBook() {
       description: descriptions,
     });
   };
+  const showModalUpdate = (data: Book) => {
+    setIsID(data.id);
+    form.setFieldsValue(data); // isi form dengan data
+    setIsType("update");
+    setIsModalOpen(true);
+  };
+
   const showModal = () => {
+    form.resetFields();
     setIsModalOpen(true);
   };
   useEffect(() => {
     getDataTable();
   }, []);
+
   const getDataTable = async () => {
     try {
       setIsLoading(true);
-      const response = await getAllBooks();
+      const response = await getAllBooks(currentPage, pageSize);
       setIsData(response?.data?.data);
       setIsLoading(false);
-      console.log("response", response);
     } catch (error: any) {
       setIsLoading(false);
+    }
+  };
+
+  const handleSubmitBook = async (values: Book) => {
+    try {
+      const payload = {
+        ...values,
+        quantity: values.quantity.toString(), // konversi
+      };
+      await createBook(payload);
+
+      openNotificationWithIcon(
+        "success",
+        "Add Book",
+        "Books retrieved successfully"
+      );
+      getDataTable();
+      setIsModalOpen(false);
+    } catch (error: any) {
+      openNotificationWithIcon("error", "Add Book", error.message);
+    }
+  };
+
+  const handleUpateBook = async (values: Book) => {
+    try {
+      const payload = {
+        ...values,
+        quantity: values.quantity.toString(), // konversi
+      };
+      await updateBook(isID, payload);
+
+      openNotificationWithIcon(
+        "success",
+        "Update Book",
+        "Books retrieved successfully"
+      );
+      getDataTable();
+      setIsModalOpen(false);
+      setIsID("");
+    } catch (error: any) {
+      openNotificationWithIcon("error", "Add Book", error.message);
+    }
+  };
+
+  const handleDeleteBook = async (values: Book) => {
+    try {
+      await deleteBook(isID);
+
+      openNotificationWithIcon(
+        "success",
+        "Delete Book",
+        "deleteBooks successfully "
+      );
+      getDataTable();
+      setIsModalDelete(false);
+    } catch (error: any) {
+      setIsModalDelete(false);
+      openNotificationWithIcon("error", "Add Book", error.message);
     }
   };
   return (
@@ -129,7 +218,13 @@ export default function ManagementBook() {
         <div className="flex-1 p-6 bg-gray-100  overflow-auto">
           <div className="border bg-white h-full p-4">
             <div className="flex justify-end pb-8">
-              <Button type="primary" onClick={showModal}>
+              <Button
+                type="primary"
+                onClick={() => {
+                  showModal();
+                  setIsType("add");
+                }}
+              >
                 Add
               </Button>
             </div>
@@ -148,7 +243,17 @@ export default function ManagementBook() {
           </div>
         </div>
       </div>
-      <ModalAddBook setIsModalOpen={setIsModalOpen} open={isModalOpen} />
+      <ModalAddBook
+        form={form}
+        setIsModalOpen={setIsModalOpen}
+        open={isModalOpen}
+        onSubmit={isType == "add" ? handleSubmitBook : handleUpateBook}
+      />
+      <ModalConfirmation
+        open={isModalDelete}
+        setIsModalOpen={setIsModalDelete}
+        onSubmit={handleDeleteBook}
+      />
     </div>
   );
 }

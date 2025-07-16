@@ -73,7 +73,7 @@ export default function BooksByCategory({ data }: category) {
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
-                data={data}
+                data={data ? data : []}
                 cx="50%"
                 cy="40%"
                 labelLine={false}
@@ -82,7 +82,7 @@ export default function BooksByCategory({ data }: category) {
                 fill="#8884d8"
                 dataKey="book_count"
               >
-                {data.map((entry, index) => (
+                {data?.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>

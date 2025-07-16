@@ -80,28 +80,6 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
           </div>
         </div>
 
-        {/* Membership Type */}
-        <div>
-          <label
-            htmlFor="membershipType"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Jenis Keanggotaan
-          </label>
-          <select
-            id="membershipType"
-            name="membershipType"
-            required
-            className="block w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-          >
-            <option value="">Pilih jenis keanggotaan</option>
-            <option value="student">Mahasiswa</option>
-            <option value="lecturer">Dosen</option>
-            <option value="staff">Staff</option>
-            <option value="public">Umum</option>
-          </select>
-        </div>
-
         {/* Password Field */}
         <div>
           <label

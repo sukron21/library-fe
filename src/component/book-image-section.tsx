@@ -18,14 +18,6 @@ export default function BookImageSection() {
       </div>
 
       {/* Features */}
-      <div className="mt-8 grid grid-cols-1 gap-4 w-full max-w-sm">
-        <div className="flex items-center space-x-3">
-          <GraduationCap className="h-5 w-5 text-blue-200" />
-          <span className="text-sm text-blue-100">
-            Koleksi Akademik Lengkap
-          </span>
-        </div>
-      </div>
     </div>
   );
 }

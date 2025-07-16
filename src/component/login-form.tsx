@@ -1,29 +1,63 @@
 "use client";
-
-import { useActionState } from "react";
-import { loginUser } from "../actions/auth";
 import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { LoginRequest } from "@/lib/types/auth";
+import { notification } from "antd";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
+import { login } from "@/lib/api/auth.api";
 
 interface LoginFormProps {
   onSwitchToRegister: () => void;
 }
 
+type NotificationType = "success" | "info" | "warning" | "error";
+
 export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
-  const [state, action, isPending] = useActionState(
-    async (_prevState: any, formData: FormData) => {
-      return await loginUser(formData);
-    },
-    {
-      success: false,
-      message: "",
-    }
-  );
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [api, contextHolder] = notification.useNotification();
+  const router = useRouter();
+
+  const openNotificationWithIcon = (
+    type: NotificationType,
+    title: string,
+    descriptions: string
+  ) => {
+    api[type]({
+      message: title,
+      description: descriptions,
+    });
+  };
+  const { handleSubmit, register } = useForm<LoginRequest>();
+
+  const onSubmit = async (data: LoginRequest) => {
+    try {
+      setIsLoading(true);
+      const response = await login({
+        email: data?.email,
+        password: data?.password,
+      });
+      setIsLoading(false);
+      openNotificationWithIcon("success", "Login", "Berhasil Login");
+      router.push("/dashboard");
+    } catch (error: any) {
+      setIsLoading(false);
+      console.log("error", error);
+
+      openNotificationWithIcon(
+        "success",
+        "Login",
+        "Gagal Login mohon periksa kembali email"
+      );
+    }
+  };
 
   return (
     <div className="w-full h-full flex flex-col justify-center p-8">
       {/* Header */}
+      {contextHolder}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900">Selamat Datang</h2>
         <p className="mt-2 text-sm text-gray-600">
@@ -32,7 +66,7 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
       </div>
 
       {/* Login Form */}
-      <form className="space-y-4" action={action}>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {/* Email Field */}
         <div>
           <label
@@ -47,9 +81,8 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
             </div>
             <input
               id="email"
-              name="email"
+              {...register("email", { required: true })}
               type="email"
-              required
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="nama@email.com"
             />
@@ -70,9 +103,8 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
             </div>
             <input
               id="password"
-              name="password"
+              {...register("password", { required: true })}
               type={showPassword ? "text" : "password"}
-              required
               className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               placeholder="Masukkan password"
             />
@@ -111,22 +143,11 @@ export default function LoginForm({ onSwitchToRegister }: LoginFormProps) {
         {/* Submit Button */}
         <button
           type="submit"
-          disabled={isPending}
+          disabled={isLoading}
           className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isPending ? "Memproses..." : "Masuk"}
+          {isLoading ? "Memproses..." : "Masuk"}
         </button>
-
-        {/* Status Message */}
-        {state && (
-          <div
-            className={`text-center text-sm ${
-              state.success ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            {state.message}
-          </div>
-        )}
 
         {/* Switch to Register */}
         <div className="text-center pt-4">

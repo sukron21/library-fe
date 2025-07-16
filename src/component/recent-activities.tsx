@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { RecentActivity } from "@/lib/types/dashboard";
 
 const activities = [
   {
@@ -67,7 +68,10 @@ const activities = [
   },
 ];
 
-export default function RecentActivities() {
+interface recent {
+  data: RecentActivity[];
+}
+export default function RecentActivities({ data }: recent) {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="flex-shrink-0">
@@ -78,15 +82,15 @@ export default function RecentActivities() {
       </CardHeader>
       <CardContent className="flex-1 overflow-hidden">
         <div className="h-[300px] overflow-y-auto space-y-4 pr-2">
-          {activities.map((activity) => (
-            <div key={activity.id} className="flex items-center space-x-4">
+          {data?.map((activity, i: number) => (
+            <div key={i} className="flex items-center space-x-4">
               <Avatar className="h-9 w-9 flex-shrink-0">
                 <AvatarImage
-                  src={activity.avatar || "/placeholder.svg"}
-                  alt={activity.user}
+                  // src={activity?.avatar || "/placeholder.svg"}
+                  alt={activity?.user_name}
                 />
                 <AvatarFallback>
-                  {activity.user
+                  {activity?.user_name
                     .split(" ")
                     .map((n) => n[0])
                     .join("")}
@@ -95,21 +99,21 @@ export default function RecentActivities() {
               <div className="flex-1 space-y-1 min-w-0">
                 <p className="text-sm font-medium leading-none">
                   <span className="truncate block">
-                    {activity.user} {activity.action}
+                    {activity?.user_name} {activity?.type}
                   </span>
                   <span className="font-normal text-muted-foreground truncate block">
-                    "{activity.book}"
+                    "{activity?.book_title}"
                   </span>
                 </p>
-                <p className="text-xs text-muted-foreground">{activity.time}</p>
+                <p className="text-xs text-muted-foreground">
+                  {activity?.date}
+                </p>
               </div>
               <Badge
-                variant={
-                  activity.status === "borrowed" ? "default" : "secondary"
-                }
+                variant={activity?.type === "borrow" ? "default" : "secondary"}
                 className="flex-shrink-0"
               >
-                {activity.status === "borrowed" ? "Dipinjam" : "Dikembalikan"}
+                {activity?.type === "borrow" ? "Dipinjam" : "Dikembalikan"}
               </Badge>
             </div>
           ))}

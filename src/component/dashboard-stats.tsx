@@ -1,36 +1,31 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DashboardSummary } from "@/lib/types/dashboard";
 import { BookOpen, Users, TrendingUp, Calendar } from "lucide-react";
-
-export default function DashboardStats() {
+interface stats {
+  data: DashboardSummary;
+}
+export default function DashboardStats({ data }: stats) {
   const stats = [
     {
       title: "Total Buku",
-      value: "12,847",
-      change: "+2.5%",
-      changeType: "positive" as const,
+      value: data?.total_books,
       icon: BookOpen,
     },
     {
       title: "Anggota Aktif",
-      value: "3,421",
-      change: "+12.3%",
-      changeType: "positive" as const,
+      value: data?.total_members,
       icon: Users,
     },
     {
       title: "Peminjaman Bulan Ini",
-      value: "1,892",
-      change: "+8.7%",
-      changeType: "positive" as const,
+      value: data?.borrowings_this_month,
       icon: TrendingUp,
     },
     {
       title: "Rata-rata Harian",
-      value: "63",
-      change: "-2.1%",
-      changeType: "negative" as const,
+      value: data?.avg_daily_borrowings,
       icon: Calendar,
     },
   ];
@@ -45,15 +40,6 @@ export default function DashboardStats() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stat.value}</div>
-            <p
-              className={`text-xs ${
-                stat.changeType === "positive"
-                  ? "text-green-600"
-                  : "text-red-600"
-              }`}
-            >
-              {stat.change} dari bulan lalu
-            </p>
           </CardContent>
         </Card>
       ))}

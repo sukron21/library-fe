@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
+import { BookCategoryDistribution } from "@/lib/types/dashboard";
 
 const data = [
   { name: "Teknologi Informasi", value: 2847, color: "#0088FE" },
@@ -48,8 +49,10 @@ const renderCustomizedLabel = ({
     </text>
   );
 };
-
-export default function BooksByCategory() {
+interface category {
+  data: BookCategoryDistribution[];
+}
+export default function BooksByCategory({ data }: category) {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="flex-shrink-0">
@@ -61,7 +64,7 @@ export default function BooksByCategory() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={{
-            value: {
+            book_count: {
               label: "Jumlah Buku",
             },
           }}
@@ -77,7 +80,7 @@ export default function BooksByCategory() {
                 label={renderCustomizedLabel}
                 outerRadius={100}
                 fill="#8884d8"
-                dataKey="value"
+                dataKey="book_count"
               >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
@@ -91,7 +94,7 @@ export default function BooksByCategory() {
                       <div className="bg-white p-3 border rounded-lg shadow-lg">
                         <p className="font-medium">{data.name}</p>
                         <p className="text-sm text-gray-600">
-                          {data.value.toLocaleString()} buku
+                          {data.book_count.toLocaleString()} buku
                         </p>
                       </div>
                     );

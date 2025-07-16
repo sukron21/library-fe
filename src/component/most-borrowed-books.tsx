@@ -13,6 +13,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { MostBorrowedBook } from "@/lib/types/dashboard";
 
 const data = [
   {
@@ -44,8 +45,11 @@ const data = [
     borrowed: 76,
   },
 ];
+interface most {
+  datas: MostBorrowedBook[];
+}
 
-export default function MostBorrowedBooks() {
+export default function MostBorrowedBooks({ datas }: most) {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="flex-shrink-0">
@@ -57,7 +61,7 @@ export default function MostBorrowedBooks() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={{
-            borrowed: {
+            borrow_count: {
               label: "Jumlah Peminjaman",
               color: "hsl(var(--chart-1))",
             },
@@ -66,7 +70,7 @@ export default function MostBorrowedBooks() {
         >
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              data={data}
+              data={datas ? datas : []}
               margin={{ top: 20, right: 30, left: 20, bottom: 100 }}
             >
               <XAxis
@@ -79,7 +83,11 @@ export default function MostBorrowedBooks() {
               />
               <YAxis />
               <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar dataKey="borrowed" fill="#6477DB" radius={[4, 4, 0, 0]} />
+              <Bar
+                dataKey="borrow_count"
+                fill="#6477DB"
+                radius={[4, 4, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </ChartContainer>

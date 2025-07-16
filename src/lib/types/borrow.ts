@@ -25,6 +25,13 @@ export interface Borrow {
   user_id: string;
   borrow_date: string;
   return_date: string | null;
-  Book: Books;
-  User: User;
+  Book?: Books;
+  User?: User;
+}
+
+export interface createsBorrow {
+  id?: string;
+  book_id: string;
+  Borrow_date?: string;
+  ReturnDate: string | null;
 }

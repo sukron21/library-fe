@@ -31,3 +31,8 @@ export const deleteBook = async (id: string): Promise<{ success: boolean; messag
   const res = await api.delete<{ success: boolean; message: string }>(`/protected/books/${id}`);
   return res.data;
 };
+
+export const getBookAll = async (): Promise<PaginationResponse<Book>> => {
+  const res = await api.get<PaginationResponse<Book>>(`/protected/books/all`);
+  return res.data;
+};

@@ -14,25 +14,6 @@ import {
 import { Book } from "@/lib/types/book";
 import ModalConfirmation from "@/component/modal-confirmation";
 
-const dataSource = [
-  {
-    key: "1",
-    title: "Mike",
-    author: 32,
-    isbn: "10 Downing Street",
-    quantity: "10 Downing Street",
-    category: "10 Downing Street",
-  },
-  {
-    key: "2",
-    title: "John",
-    author: 42,
-    isbn: "10 Downing Street",
-    quantity: "10 Downing Street",
-    category: "10 Downing Street",
-  },
-];
-
 type NotificationType = "success" | "info" | "warning" | "error";
 
 export default function ManagementBook() {
@@ -42,6 +23,7 @@ export default function ManagementBook() {
   const [api, contextHolder] = notification.useNotification();
   const [isLoading, setIsLoading] = useState(false);
   const [isData, setIsData] = useState<any>([]);
+  const [isTotalData, setIsTotalData] = useState<any>();
   const [isID, setIsID] = useState<string>("");
   const [isType, setIsType] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -141,6 +123,9 @@ export default function ManagementBook() {
     try {
       setIsLoading(true);
       const response = await getAllBooks(currentPage, pageSize);
+      console.log("response", response);
+
+      setIsTotalData(response?.data.total_items);
       setIsData(response?.data?.data);
       setIsLoading(false);
     } catch (error: any) {
@@ -189,7 +174,7 @@ export default function ManagementBook() {
     }
   };
 
-  const handleDeleteBook = async (values: Book) => {
+  const handleDeleteBook = async () => {
     try {
       await deleteBook(isID);
 
@@ -233,6 +218,7 @@ export default function ManagementBook() {
               dataSource={isData}
               columns={columns}
               pagination={{
+                total: isTotalData,
                 current: currentPage,
                 pageSize: pageSize,
                 onChange: (page) => setCurrentPage(page),

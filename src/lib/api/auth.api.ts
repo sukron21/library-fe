@@ -7,7 +7,6 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
     email: data.email,
   password: data.password,
   });
-    console.log('res',res.data);
     
   // Simpan token ke cookie
   Cookies.set("access_token", res.data.data.access_token);
@@ -17,8 +16,6 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
 };
 
 export const registered = async (data: RegisterRequest): Promise<RegisResponse> => {
-    console.log('data21',data);
-    
   const res = await api.post<RegisResponse>("/users", data);
   return res.data;
 };

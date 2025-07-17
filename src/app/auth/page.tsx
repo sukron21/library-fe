@@ -11,7 +11,7 @@ export default function AuthPage() {
       <div className="bg-white rounded-2xl shadow-2xl overflow-hidden max-w-4xl w-full min-h-[600px]">
         <div className="flex flex-col lg:flex-row h-full">
           {/* Left Side - Book Image */}
-          <div className="lg:w-1/2 h-64 lg:h-auto">
+          <div className="hidden lg:block lg:w-1/2 h-64 lg:h-auto">
             <BookImageSection />
           </div>
 

@@ -3,7 +3,7 @@ import { Button, Form, notification, Table, Tooltip } from "antd";
 import Sidebar from "@/component/sidebar";
 import Header from "@/component/header";
 import { Pencil, Trash2 } from "lucide-react";
-import ModalAddBook from "@/component/modal-add-book";
+import ModalAddBook from "@/component/Modal/modal-add-book";
 import { useEffect, useState } from "react";
 import {
   createBook,
@@ -12,7 +12,7 @@ import {
   updateBook,
 } from "@/lib/api/books.api";
 import { Book } from "@/lib/types/book";
-import ModalConfirmation from "@/component/modal-confirmation";
+import ModalConfirmation from "@/component/Modal/modal-confirmation";
 
 type NotificationType = "success" | "info" | "warning" | "error";
 

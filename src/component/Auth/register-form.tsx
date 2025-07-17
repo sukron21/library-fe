@@ -139,6 +139,11 @@ export default function RegisterForm({ onSwitchToLogin }: RegisterFormProps) {
               {...register("password", {
                 required: "Password wajib diisi",
                 minLength: { value: 6, message: "Minimal 6 karakter" },
+                pattern: {
+                  value:
+                    /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>[\]\\\/`~_+=\-]).+$/,
+                  message: "Harus ada huruf besar, angka, dan simbol",
+                },
               })}
               id="password"
               type={showPassword ? "text" : "password"}

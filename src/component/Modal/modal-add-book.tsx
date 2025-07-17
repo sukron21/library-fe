@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button, Form, Input, InputNumber, Modal, Tag } from "antd";
-import { Info } from "lucide-react";
 
 type RequiredMark = boolean | "optional" | "customize";
 

@@ -1,9 +1,9 @@
 "use client";
-import DashboardStats from "../../component/dashboard-stats";
-import MostBorrowedBooks from "../../component/most-borrowed-books";
-import MonthlyLendingTrends from "../../component/monthly-lending-trends";
-import BooksByCategory from "../../component/books-by-category";
-import RecentActivities from "../../component/recent-activities";
+import DashboardStats from "@/component/Dashboard/dashboard-stats";
+import MostBorrowedBooks from "@/component/Dashboard/most-borrowed-books";
+import MonthlyLendingTrends from "@/component/Dashboard/monthly-lending-trends";
+import BooksByCategory from "@/component/Dashboard/books-by-category";
+import RecentActivities from "@/component/Dashboard/recent-activities";
 import Sidebar from "@/component/sidebar";
 import Header from "@/component/header";
 import React, { useEffect, useState } from "react";

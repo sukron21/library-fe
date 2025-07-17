@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import { LoginRequest } from "@/lib/types/auth";
 import { notification } from "antd";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import { login } from "@/lib/api/auth.api";
 
 interface LoginFormProps {

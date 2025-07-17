@@ -29,11 +29,6 @@ const ModalLendBook: React.FC<lendBook> = ({
   }) => {
     setRequiredMarkType(requiredMarkValue);
   };
-
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -41,7 +36,6 @@ const ModalLendBook: React.FC<lendBook> = ({
     value: book.id,
     label: book.title,
   }));
-  console.log("dataBook", dataBook);
 
   return (
     <>
@@ -50,7 +44,6 @@ const ModalLendBook: React.FC<lendBook> = ({
         closable={{ "aria-label": "Custom Close Button" }}
         open={open}
         footer
-        // onOk={handleOk}
         onCancel={handleCancel}
       >
         <Form
@@ -59,16 +52,8 @@ const ModalLendBook: React.FC<lendBook> = ({
           initialValues={{ requiredMarkValue: requiredMark }}
           onValuesChange={onRequiredTypeChange}
           onFinish={onSubmit}
-          //   requiredMark={
-          //     requiredMark === "customize" ? customizeRequiredMark : requiredMark
-          //   }
         >
-          <Form.Item
-            name="Book_id"
-            label="Book"
-            required
-            // tooltip={{ title: "Tooltip with customize icon", icon: <Info /> }}
-          >
+          <Form.Item name="Book_id" label="Book" required>
             <Select
               showSearch
               placeholder="Select a person"
@@ -80,13 +65,7 @@ const ModalLendBook: React.FC<lendBook> = ({
               options={bookOptions}
             />
           </Form.Item>
-          {/* <Form.Item
-            label="Isbn"
-            required
-            // tooltip={{ title: "Tooltip with customize icon", icon: <Info /> }}
-          >
-            <Input placeholder="input placeholder" />
-          </Form.Item> */}
+
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit

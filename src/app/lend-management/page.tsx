@@ -2,8 +2,8 @@
 import { Button, Form, notification, Table, Tooltip } from "antd";
 import Sidebar from "@/component/sidebar";
 import Header from "@/component/header";
-import { BookCheck, Pencil, Trash2 } from "lucide-react";
-import ModalLendBook from "@/component/modal-lend-book";
+import { BookCheck, Trash2 } from "lucide-react";
+import ModalLendBook from "@/component/Modal/modal-lend-book";
 import { useEffect, useState } from "react";
 import {
   createBorrow,
@@ -11,10 +11,9 @@ import {
   getAllBorrow,
   updateBorrow,
 } from "@/lib/api/borrow.api";
-import { Borrow, createsBorrow } from "@/lib/types/borrow";
-import { deleteBook, getBookAll } from "@/lib/api/books.api";
-import ModalConfirmation from "@/component/modal-confirmation";
-import { Book } from "@/lib/types/book";
+import { createsBorrow } from "@/lib/types/borrow";
+import { getBookAll } from "@/lib/api/books.api";
+import ModalConfirmation from "@/component/Modal/modal-confirmation";
 
 type NotificationType = "success" | "info" | "warning" | "error";
 export default function ManagementLend() {

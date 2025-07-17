@@ -1,8 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import LoginForm from "../../component/login-form";
-import BookImageSection from "../../component/book-image-section";
-import RegisterForm from "@/component/register-form";
+import LoginForm from "@/component/Auth/login-form";
+import BookImageSection from "@/component/Auth/book-image-section";
+import RegisterForm from "@/component/Auth/register-form";
 
 export default function AuthPage() {
   const [isPage, setIsPage] = useState(1);

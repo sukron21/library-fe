@@ -1,6 +1,6 @@
 "use client";
 
-import { BookOpen, GraduationCap, Users, Clock } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 export default function BookImageSection() {
   return (

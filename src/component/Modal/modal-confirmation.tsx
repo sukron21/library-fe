@@ -1,22 +1,5 @@
-import React, { useState } from "react";
-import { Button, Form, Input, InputNumber, Modal, Tag } from "antd";
-import { Info } from "lucide-react";
-
-type RequiredMark = boolean | "optional" | "customize";
-
-const customizeRequiredMark = (
-  label: React.ReactNode,
-  { required }: { required: boolean }
-) => (
-  <>
-    {required ? (
-      <Tag color="error">Required</Tag>
-    ) : (
-      <Tag color="warning">optional</Tag>
-    )}
-    {label}
-  </>
-);
+import React from "react";
+import { Modal, Tag } from "antd";
 
 interface AddBook {
   setIsModalOpen: (open: boolean) => void;

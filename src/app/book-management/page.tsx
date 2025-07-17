@@ -94,6 +94,7 @@ export default function ManagementBook() {
       ),
     },
   ];
+
   const openNotificationWithIcon = (
     type: NotificationType,
     title: string,
@@ -123,8 +124,6 @@ export default function ManagementBook() {
     try {
       setIsLoading(true);
       const response = await getAllBooks(currentPage, pageSize);
-      console.log("response", response);
-
       setIsTotalData(response?.data.total_items);
       setIsData(response?.data?.data);
       setIsLoading(false);

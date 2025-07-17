@@ -39,7 +39,9 @@ export default function DashboardStats({ data }: stats) {
             <stat.icon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stat?.value}</div>
+            <div className="text-4xl font-bold flex justify-center items-center">
+              {stat?.value}
+            </div>
           </CardContent>
         </Card>
       ))}
